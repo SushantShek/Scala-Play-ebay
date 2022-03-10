@@ -5,14 +5,12 @@ import com.mp.showandtell.business.FileRegister;
 import com.mp.showandtell.business.ReaderInterface;
 import com.mp.showandtell.domain.CreditInput;
 import com.mp.showandtell.domain.CreditOutput;
-import com.mp.showandtell.view.MakeHtmlTable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +20,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class PRNFileReader implements ReaderInterface {
+public class PNRFileReader implements ReaderInterface {
     private static final String DILIM_PRN = " ";
     private static final String STRING_DELIM = ";";
     private static final Pattern PRN_SPLITTER = Pattern.compile(DILIM_PRN);
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     static {
-        FileRegister.register("prn", new PRNFileReader());
+        FileRegister.register("prn", new PNRFileReader());
     }
 
     private Function<String, CreditInput> mapToCredit = (line) -> {
@@ -135,7 +133,6 @@ public class PRNFileReader implements ReaderInterface {
                         builder.append(tmp[1]);
                     } else {
                         builder.append(str + ";");
-//                        System.out.println(str + "|");
                     }
                 }
                 count++;
@@ -145,55 +142,6 @@ public class PRNFileReader implements ReaderInterface {
             System.out.println(" ");
         }
         List<CreditInput> output = strList.stream().map(mapToCredit).collect(Collectors.toList());
-//        inputList.add((CreditInput) output);
-
-//        System.out.println(MAPPER.writeValueAsString(inputValuesInLines));
-
-       /*
-
-       try (BufferedWriter bw = Files.newBufferedWriter(new File("C://Temp//csv//output.csv").toPath())) {
-            // header
-            bw.append("POL1").append(DILIM_CSV).append("POL1_Time").append(DILIM_CSV).append("OLV1").append(DILIM_CSV).append("OLV1_Time").append(DILIM_CSV);
-            bw.append("POL2").append(DILIM_CSV).append("POL2_Time").append(DILIM_CSV).append("OLV2").append(DILIM_CSV).append("OLV2_Time");
-            bw.newLine();
-
-           // data
-            for (int i = 0; i + 3 < inputValuesInLines.size(); i = i + 4) {
-                String[] firstValues = inputValuesInLines.get(i);
-                bw.append(getId(firstValues)).append(DILIM_CSV).append(getDateTime(firstValues)).append(DILIM_CSV);
-                String[] secondValues = inputValuesInLines.get(i + 1);
-                bw.append(getId(secondValues)).append(DILIM_CSV).append(getDateTime(secondValues)).append(DILIM_CSV);
-                String[] thirdValues = inputValuesInLines.get(i + 2);
-                bw.append(getId(thirdValues)).append(DILIM_CSV).append(getDateTime(thirdValues)).append(DILIM_CSV);
-                String[] fourthValues = inputValuesInLines.get(i + 3);
-                bw.append(getId(fourthValues)).append(DILIM_CSV).append(getDateTime(fourthValues));
-                bw.newLine();
-            }
-        }*/
         return output;
     }
-}/*
-    List<String> inputLines = Files.readAllLines(new File("C://Temp//csv/input.prn").toPath());
-        List<String[]> inputValuesInLines = inputLines.stream().map(l -> PRN_SPLITTER.split(l)).collect(Collectors.toList());
-
-        try (BufferedWriter bw = Files.newBufferedWriter(new File("C://Temp//csv//output.csv").toPath())) {
-            // header
-            bw.append("POL1").append(DILIM_CSV).append("POL1_Time").append(DILIM_CSV).append("OLV1").append(DILIM_CSV).append("OLV1_Time").append(DILIM_CSV);
-            bw.append("POL2").append(DILIM_CSV).append("POL2_Time").append(DILIM_CSV).append("OLV2").append(DILIM_CSV).append("OLV2_Time");
-            bw.newLine();
-
-            // data
-            for (int i = 0; i + 3 < inputValuesInLines.size(); i = i + 4) {
-                String[] firstValues = inputValuesInLines.get(i);
-                bw.append(getId(firstValues)).append(DILIM_CSV).append(getDateTime(firstValues)).append(DILIM_CSV);
-                String[] secondValues = inputValuesInLines.get(i + 1);
-                bw.append(getId(secondValues)).append(DILIM_CSV).append(getDateTime(secondValues)).append(DILIM_CSV);
-                String[] thirdValues = inputValuesInLines.get(i + 2);
-                bw.append(getId(thirdValues)).append(DILIM_CSV).append(getDateTime(thirdValues)).append(DILIM_CSV);
-                String[] fourthValues = inputValuesInLines.get(i + 3);
-                bw.append(getId(fourthValues)).append(DILIM_CSV).append(getDateTime(fourthValues));
-                bw.newLine();
-            }
-        }
-    }
-    * */
+}

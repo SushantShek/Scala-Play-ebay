@@ -65,7 +65,7 @@ public class CSVFileReader implements ReaderInterface {
 
         List<CreditInput> inputList = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath.toString(), Charset.forName("UTF-8")))){
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath, Charset.forName("UTF-8")))){
            /* File inputF = new File(inputFilePath);
             InputStream inputFS = new FileInputStream(inputF);
             BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));*/
