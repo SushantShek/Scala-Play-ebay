@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,7 @@ public class FileReaderController {
     CreditInput input;
 
     @PostMapping(path = "/upload")
-    public String loadInventory(Model model, @RequestPart("file") MultipartFile file) throws FileNotFoundException {
+    public ResponseEntity loadInventory(Model model, @RequestPart("file") MultipartFile file) throws FileNotFoundException {
         if (null == file.getOriginalFilename()) {
 //            return new ResponseEntity<>("File not found", HttpStatus.BAD_REQUEST);
         }
@@ -58,8 +60,8 @@ public class FileReaderController {
 
             model.addAttribute("jsonArr", obj);
             resp = jsonObject.toString();
-//            return new ResponseEntity(fileService.loadFile(file),HttpStatus.OK);
-            return "hello";
+            return new ResponseEntity(fileService.loadFile(file), HttpStatus.OK);
+//            return "hello";
         } catch (IOException | JSONException e) {
             log.error("Exception in loadInventory " + e);
             throw new FileProcessingException("Some exception while saving the data");

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mp.showandtell.business.FileRegister;
 import com.mp.showandtell.business.ReaderInterface;
 import com.mp.showandtell.domain.CreditInput;
+import com.mp.showandtell.domain.CreditOutput;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -76,7 +77,9 @@ public class CSVFileReader implements ReaderInterface {
             log.error("File handling exception{}", e);
         }
 
+        CreditOutput out = new CreditOutput();
+        out.setOutput(inputList);
 //        System.out.println(MAPPER.writeValueAsString(inputList));
-        return MAPPER.writeValueAsString(inputList);
+        return MAPPER.writeValueAsString(out);
     }
 }

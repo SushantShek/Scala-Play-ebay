@@ -68,19 +68,11 @@ public class PRNFileReader implements ReaderInterface {
 
     @Override
     public String readFile(Path tempFile) throws IOException {
-
-//        System.out.println(" PRNFileReader ");
         List<CreditInput> creditInputs = processPNRInputFile(tempFile).stream().skip(1).map(mapToCredit).collect(Collectors.toList());
-//       String html = MakeHtmlTable.MakeHtmlTable(new CreditOutput(output));
-//        System.out.println(html);
-//        MAPPER.convertValue(output, CreditOutput.class);
         CreditOutput out = new CreditOutput();
         out.setOutput(creditInputs);
-//        for (CreditInput in : output){
-//            out.setOutput();
-//        }
-        System.out.println(MAPPER.writeValueAsString(out));
-        return MAPPER.writeValueAsString(out); //processPNRInputFile(tempFile);
+//        System.out.println(MAPPER.writeValueAsString(out));
+        return MAPPER.writeValueAsString(out);
     }
 
     @Override
@@ -91,7 +83,6 @@ public class PRNFileReader implements ReaderInterface {
     public List<String> processPNRInputFile(Path path) {
         List<String> prnList = new ArrayList<>();
         String response = "{}";
-//        System.out.println("PRN: " + path.toString());
         try (
                 BufferedReader br = new BufferedReader(new FileReader(path.toString(),Charset.forName("UTF-8")))) {
             String line;
@@ -106,13 +97,10 @@ public class PRNFileReader implements ReaderInterface {
                     sb.append(sb.toString().equals("") ? str : "; " + str);
                 }
                 prnList.add(sb.toString());
-//                System.out.println(sb.toString());
             }
-//            System.out.println( MAPPER.writeValueAsString(prnList));
-//            response = MAPPER.writeValueAsString(prnList);
         }
       catch (IOException ex) {
-            System.out.println("Exception processPNRInputFile : "+ex);
+//            System.out.println("Exception processPNRInputFile : "+ex);
             log.error("processPNRInputFile{}",ex);
         }
         return prnList;
